@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # Jellyfin (Media Server)
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - 8096:8096
+    volumes:
+      - ${ROOT}/config/jellyfin:/config
+      - ${ROOT}/media:/media
+      - /dev/shm/jellyfin-transcode:/transcode
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=http://localhost:8096
+
+  # Radarr (Movies)
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    volumes:
+      - ${ROOT}/config/radarr:/config
+      - ${ROOT}/media/movies:/movies
+      - ${ROOT}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+  # Sonarr (TV Shows)
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    volumes:
+      - ${ROOT}/config/sonarr:/config
+      - ${ROOT}/media/tvshows:/tvshows
+      - ${ROOT}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+  # Prowlarr (Indexer Manager)
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    ports:
+      - 9696:9696
+    volumes:
+      - ${ROOT}/config/prowlarr:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+  # qBittorrent (Torrent Client)
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    volumes:
+      - ${ROOT}/config/qbittorrent:/config
+      - ${ROOT}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+      - DOCKER_MODS=ghcr.io/gabe565/linuxserver-mod-vuetorrent
+
+  # Jellyseerr (Request Management)
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: unless-stopped
+    ports:
+      - 5055:5055
+    volumes:
+      - ${ROOT}/config/jellyseerr:/app/config
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ}
+
+  # Flaresolverr (bypass Cloudflare and DDoS-GUARD protection)
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    ports:
+      - 8191:8191
+    environment:
+      - LOG_LEVEL=debug
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ}
+
+networks:
+  default:
+    name: media-network
