@@ -50,6 +50,22 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
 
+  # Bazarr (Subtitles)
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: unless-stopped
+    ports:
+      - 6767:6767
+    volumes:
+      - ${ROOT}/config/bazarr:/config
+      - ${ROOT}/media/movies:/movies
+      - ${ROOT}/media/tvshows:/tvshows
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
   # Prowlarr (Indexer Manager)
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest

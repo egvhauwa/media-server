@@ -26,6 +26,7 @@ Once the applications are deployed, you can access them using the following addr
 - Jellyseer : http://localhost:5055
 - Sonarr : http://localhost:8989
 - Radarr : http://localhost:7878
+- Bazarr : http://localhost:6767
 - Prowlarr : http://localhost:9696
 - qBittorrent : http://localhost:8080
 
@@ -105,6 +106,20 @@ To use the VueTorrent WebUI just go to qBittorrent, Options, Web UI, Use Alterna
 4. Click **Test**. If you see a checkmark, it means the connection is working; if not, there is an error.
 5. Click **Save**.
 
+### profiles & quality
+
+1. Configure the profile settings in **Settings** > **Profiles**. Update/create `HD-1080p`, `HD-1080p-REMUX`, `Ultra-HD` and `Ultra-HD-REMUX` (REMUX are the raw files, so best quality but takes a lot of space).
+
+<div style="text-align: center">
+    <img src="images/radarr-profiles.png" style="margin: 15px 10px;">
+</div>
+
+2. Configure the quality settings in **Settings** > **Quality**.
+
+<div style="text-align: center">
+    <img src="images/radarr-quality.png" style="margin: 15px 10px;">
+</div>
+
 _Note: if entering `localhost` as the Host does not work, try entering the IP address instead (ex: `192.168.x.x`)_
 
 ## Sonarr
@@ -129,6 +144,20 @@ _Note: if entering `qbittorrent` as the Host does not work, try entering the IP 
    - **Category**: `tvshows` (this should match the category set in qBittorrent)
 4. Click **Test**. If you see a checkmark, it means the connection is working.
 5. Click **Save**.
+
+### profiles & quality
+
+1. Configure the profile settings in **Settings** > **Profiles**. Update `HD-1080p` and`Ultra-HD` (no REMUX here, is rare and takes up too much space for tv shows).
+
+<div style="text-align: center">
+    <img src="images/sonarr-profiles.png" style="margin: 15px 10px;">
+</div>
+
+2. Configure the quality settings in **Settings** > **Quality**.
+
+<div style="text-align: center">
+    <img src="images/sonarr-quality.png" style="margin: 15px 10px;">
+</div>
 
 ## Prowlarr
 
