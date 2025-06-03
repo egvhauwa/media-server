@@ -3,6 +3,29 @@
 - https://github.com/AdrienPoupa/docker-compose-nas
 - https://github.com/Morzomb/All-jellyfin-media-server
 
+Deploy the applications using the following command:
+
+```
+docker-compose up -d
+```
+
+Once deployed, you can access them using the following addresses:
+
+- Jellyfin : http://localhost:8096
+- Jellyseer : http://localhost:5055
+- Sonarr : http://localhost:8989
+- Radarr : http://localhost:7878
+- Bazarr : http://localhost:6767
+- Prowlarr : http://localhost:9696
+- qBittorrent : http://localhost:8080
+
+**TODO** log file rotation
+**TODO** wireshark cleanup
+**TODO** close lid do nothing
+**TODO** systemd service to deploy on startup
+**TODO** add mypassport hard drive
+**TODO** optimize power usage
+
 # Prerequisites
 
 ### Docker
@@ -15,20 +38,9 @@ Add your user to the Docker group
 sudo usermod -aG docker $USER
 ```
 
-# Accessing Applications
+### Folder structure
 
-Once the applications are deployed, you can access them using the following addresses :
-
-> [!IMPORTANT]  
-> Replace `localhost` with the IP address of your machine or remote server if needed.
-
-- Jellyfin : http://localhost:8096
-- Jellyseer : http://localhost:5055
-- Sonarr : http://localhost:8989
-- Radarr : http://localhost:7878
-- Bazarr : http://localhost:6767
-- Prowlarr : http://localhost:9696
-- qBittorrent : http://localhost:8080
+**TODO**
 
 # Configuration
 
@@ -158,6 +170,43 @@ _Note: if entering `qbittorrent` as the Host does not work, try entering the IP 
 <div style="text-align: center">
     <img src="images/sonarr-quality.png" style="margin: 15px 10px;">
 </div>
+
+## Bazarr
+
+### Languages
+
+1. Open the WebUI and go to **Settings** > **Languages**.
+2. Configure **Language Filter** (eg. Dutch & English).
+3. Add **Languages Profile** (eg. Dutch & English).
+4. Set default language profiles (eg. Dutch).
+
+### providers
+
+1. Go to **Settings** and click **Providers**.
+2. Add the following providers:
+   - OpenSubtitles.com (account needed)
+   - Embedded Subtitles
+   - Supersubtitles
+   - TVSubtitles
+   - YIFY Subtitles
+
+### configure Radarr
+
+1. Go to **Settings** and click **Radarr** and fill in the information as follows:
+   - **Adress**: ip-adress
+   - **Port**: 8989
+   - **ApiKey**: Find the API key in the Radarr interface under **Settings** > **General** > **API Key**.
+2. Click **Test** to check the connection.
+3. Click **Save**.
+
+### configure Sonarr
+
+1. Go to **Settings** and click **Sonarr** and fill in the information as follows:
+   - **Adress**: ip-adress
+   - **Port**: 8989
+   - **ApiKey**: Find the API key in the Sonarr interface under **Settings** > **General** > **API Key**.
+2. Click **Test** to check the connection.
+3. Click **Save**.
 
 ## Prowlarr
 
