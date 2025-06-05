@@ -19,9 +19,7 @@ Once deployed, you can access them using the following addresses:
 - Prowlarr : http://localhost:9696
 - qBittorrent : http://localhost:8080
 
-**TODO** log file rotation
 **TODO** wireshark cleanup
-**TODO** close lid do nothing
 **TODO** systemd service to deploy on startup
 **TODO** add mypassport hard drive
 **TODO** optimize power usage
@@ -38,6 +36,18 @@ Add your user to the Docker group
 sudo usermod -aG docker $USER
 ```
 
+Configure the default logging driver to rotate the logs. Add or modify the **daemon configuration file** at `/etc/docker/daemon.json`
+
+```
+{
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "3"
+    }
+}
+```
+
 ### Folder structure
 
 **TODO**
@@ -47,15 +57,28 @@ sudo usermod -aG docker $USER
 ## Jellyfin
 
 Go to the Jellyfin webui and configure Jellyfin.
-Enable `Automatically merge series that are spread across multiple folder` when adding a Shows Library.
+Enable `Automatically merge series that are spread across multiple folder` when adding a **Shows** Library.
 
 ### hardware acceleration
 
-1. Download jellyfin-ffmpeg
+1. Download `jellyfin-ffmpeg`
+2. Install the `nvidia-container-toolkit`
+3. Add your username to the video group
 
-2. Go to `Dashboard -> Playback -> Transcoding`
+```
+sudo usermod -aG video $USER
+```
+
+4. Check the NVIDIA GPU's status by using `nvidia-smi`
+
+```
+docker exec -it jellyfin nvidia-smi
+```
+
+5. Go to `Dashboard -> Playback -> Transcoding`
 
 - Enable hardware acceleration
+- Enable hardware encodings for the ones your GPU supports
 - Set the transcoding folder to: /transcode
 
 ## qBittorrent
@@ -287,6 +310,26 @@ _Note: if entering `qbittorrent` as the Host does not work, try entering the IP 
    - **API Key**: Find the API key in the Sonarr interface under **Settings** > **General** > **API Key**.
 3. Click **Test** to check the connection.
 4. Click **Save Changes**.
+
+# Laptop Specific Configuration
+
+If the server is installed on a laptop, you may want to disable the suspension when the lid is closed: `sudo nano /etc/systemd/logind.conf`
+
+Replace:
+
+- #HandleLidSwitch=suspend by HandleLidSwitch=ignore
+- #HandleLidSwitchDocked=ignore by HandleLidSwitchDocked=ignore
+- #LidSwitchIgnoreInhibited=yes by LidSwitchIgnoreInhibited=no
+
+Then restart: `sudo service systemd-logind restart`
+
+This behavior can be overwritten by the desktop environment.
+
+E.g. for linux mint undertake the following steps:
+
+1. Open **Power Management**
+2. Go to the **Power** tab
+3. Under **Power options**, set `When laptop lid is closed` to `Do nothing` for AC power
 
 # Possible improvements
 
