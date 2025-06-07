@@ -6,7 +6,7 @@
 Deploy the applications using the following command:
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 Once deployed, you can access them using the following addresses:
@@ -22,7 +22,6 @@ Once deployed, you can access them using the following addresses:
 **TODO** wireshark cleanup
 **TODO** systemd service to deploy on startup
 **TODO** add mypassport hard drive
-**TODO** optimize power usage
 
 # Prerequisites
 
