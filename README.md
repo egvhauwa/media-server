@@ -19,9 +19,9 @@ Once deployed, you can access them using the following addresses:
 - Prowlarr : http://localhost:9696
 - qBittorrent : http://localhost:8080
 
-**TODO** wireshark cleanup
-**TODO** systemd service to deploy on startup
 **TODO** add mypassport hard drive
+**TODO** non english movies/tvshows
+**TODO** prowlarr copy movies to root instead of Downloads
 
 # Prerequisites
 
@@ -49,7 +49,24 @@ Configure the default logging driver to rotate the logs. Add or modify the **dae
 
 ### Folder structure
 
-**TODO**
+The following folder structure is needed in the root folder of your choosing.
+
+```
+├── config
+│   ├── bazarr
+│   ├── jellyfin
+│   ├── jellyseerr
+│   ├── prowlarr
+│   ├── qbittorrent
+│   ├── radarr
+│   └── sonarr
+├── downloads
+│   ├── radarr
+│   └── sonarr
+└── media
+    ├── movies
+    └── tvshows
+```
 
 # Configuration
 
@@ -100,7 +117,8 @@ To use the VueTorrent WebUI just go to qBittorrent, Options, Web UI, Use Alterna
    - **When Default Save Path changed**: `Relocate affected torrents`
    - **When Category Save Path changed**: `Relocate affected torrents`
    - **Default Save Path**: `/downloads`
-4. Click **SAVE**.
+4. Under the **BitTorrent** tab, set the **Seeding Limits** to acceptable values and chose: then `Remove torrent`
+5. Click **SAVE**.
 
 <div style="text-align: center">
     <img src="images/qbit-options.png" style="margin: 15px 10px;">
@@ -110,13 +128,13 @@ To use the VueTorrent WebUI just go to qBittorrent, Options, Web UI, Use Alterna
 
 1. In the WebUI, expand **CATEGORIES** in the left menu. Right-click on **All** and select **Add category...**.
 2. In the **New Category** window, configure as follows:
-   - **Category**: `movies` (this corresponds to the category you will later configure in Radarr)
-   - **Save path**: `/downloads/movies`
+   - **Category**: `radarr` (this corresponds to the category you will later configure in Radarr)
+   - **Save path**: `/downloads/radarr`
 3. Click **Add**.
 4. Right-click on **All** again, select **Add category...**.
 5. Configure as follows:
-   - **Category**: `tvshows` (this should match the category configured later in Sonarr, by default `sonarr-tv`, but this guide uses `tvshows`)
-   - **Save path**: `/downloads/tvshows`
+   - **Category**: `sonarr` (this should match the category configured later in Sonarr, by default `sonarr-tv`, but this guide uses `sonarr`)
+   - **Save path**: `/downloads/sonarr`
 6. Click **Add**.
 
 ## Radarr
@@ -136,7 +154,7 @@ To use the VueTorrent WebUI just go to qBittorrent, Options, Web UI, Use Alterna
    - **Host**: `localhost`
    - **Username**: `admin`
    - **Password**: (password chosen in qBittorrent)
-   - **Category**: `movies` (this should match the category set in qBittorrent)
+   - **Category**: `radarr` (this should match the category set in qBittorrent)
 4. Click **Test**. If you see a checkmark, it means the connection is working; if not, there is an error.
 5. Click **Save**.
 
@@ -175,7 +193,7 @@ _Note: if entering `qbittorrent` as the Host does not work, try entering the IP 
    - **Host**: `qbittorrent`
    - **Username**: `admin`
    - **Password**: (password chosen in qBittorrent)
-   - **Category**: `tvshows` (this should match the category set in qBittorrent)
+   - **Category**: `sonarr` (this should match the category set in qBittorrent)
 4. Click **Test**. If you see a checkmark, it means the connection is working.
 5. Click **Save**.
 
