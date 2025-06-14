@@ -85,15 +85,35 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
 
+  # VPN for qBittorrent
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8080:8080        # qBittorrent Web UI
+      - 6881:6881        # Torrent port
+      - 6881:6881/udp
+    volumes:
+      - ${ROOT}/config/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - OPENVPN_USER=${PIA_USER}
+      - OPENVPN_PASSWORD=${PIA_PASS}
+      - REGION=switzerland
+      - TZ=${TZ}
+      - UPDATER_PERIOD=24h
+
   # qBittorrent (Torrent Client)
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     restart: unless-stopped
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+    network_mode: service:gluetun
+    depends_on:
+      - gluetun
     volumes:
       - ${ROOT}/config/qbittorrent:/config
       - ${ROOT}/downloads:/downloads

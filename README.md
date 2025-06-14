@@ -19,9 +19,7 @@ Once deployed, you can access them using the following addresses:
 - Prowlarr : http://localhost:9696
 - qBittorrent : http://localhost:8080
 
-**TODO** add mypassport hard drive
-**TODO** non english movies/tvshows
-**TODO** prowlarr copy movies to root instead of Downloads
+**TODO** release profiles
 
 # Prerequisites
 
@@ -47,6 +45,10 @@ Configure the default logging driver to rotate the logs. Add or modify the **dae
 }
 ```
 
+### Environment
+
+Create a `.env` file in this folder and fill in the enviroment variables needed for the `docker-compose.yml` file. See `.env-template` to get started.
+
 ### Folder structure
 
 The following folder structure is needed in the root folder of your choosing.
@@ -54,6 +56,7 @@ The following folder structure is needed in the root folder of your choosing.
 ```
 ├── config
 │   ├── bazarr
+│   ├── gluetun
 │   ├── jellyfin
 │   ├── jellyseerr
 │   ├── prowlarr
@@ -67,6 +70,9 @@ The following folder structure is needed in the root folder of your choosing.
     ├── movies
     └── tvshows
 ```
+
+# VPN
+To ensure anonymity and access to geo-restricted content, it’s recommended to route your qBittorrent traffic through a VPN. This stack uses **Gluetun** to enable VPN support.
 
 # Configuration
 
@@ -160,7 +166,7 @@ To use the VueTorrent WebUI just go to qBittorrent, Options, Web UI, Use Alterna
 
 ### profiles & quality
 
-1. Configure the profile settings in **Settings** > **Profiles**. Update/create `HD-1080p`, `HD-1080p-REMUX`, `Ultra-HD` and `Ultra-HD-REMUX` (REMUX are the raw files, so best quality but takes a lot of space).
+1. Configure the profile settings in **Settings** > **Profiles**. Update/create `HD-1080p`, `HD-1080p-REMUX`, `Ultra-HD` and `Ultra-HD-REMUX` (REMUX are the raw files, so best quality but takes a lot of space). Select the **Qualities** as shown in the picture below and set the **Language** to `Original`
 
 <div style="text-align: center">
     <img src="images/radarr-profiles.png" style="margin: 15px 10px;">
@@ -199,7 +205,7 @@ _Note: if entering `qbittorrent` as the Host does not work, try entering the IP 
 
 ### profiles & quality
 
-1. Configure the profile settings in **Settings** > **Profiles**. Update `HD-1080p` and`Ultra-HD` (no REMUX here, is rare and takes up too much space for tv shows).
+1. Configure the profile settings in **Settings** > **Profiles**. Update `HD-1080p` and`Ultra-HD` (no REMUX here, is rare and takes up too much space for tv shows). Select the **Qualities** as shown in the picture below.
 
 <div style="text-align: center">
     <img src="images/sonarr-profiles.png" style="margin: 15px 10px;">
